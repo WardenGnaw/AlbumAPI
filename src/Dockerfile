@@ -12,6 +12,9 @@ RUN dotnet publish -c Release -o out
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
+RUN apt update && \
+    apt install unzip && \
+    curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l ./vsdbg
 COPY --from=build-env /app/out .
 EXPOSE 3500
 ENV ASPNETCORE_URLS=http://+:3500
